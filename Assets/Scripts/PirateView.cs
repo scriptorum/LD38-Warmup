@@ -1,31 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Spewnity;
 
 public class PirateView : MonoBehaviour 
 {
-	[HideInInspector]
-	public List<SpriteRenderer> skills;
-	ShipView shipView;
+	public GameView gameView;
+	private List<SpriteRenderer> skills = new List<SpriteRenderer>();
 
 	void Awake() 
 	{
-		skills.Add(transform.GetChild("skill1").GetComponent<SpriteRenderer>());
-		skills.Add(transform.GetChild("skill2").GetComponent<SpriteRenderer>());
-		skills.Add(transform.GetChild("skill3").GetComponent<SpriteRenderer>());
-		shipView = GameObject.Find("ShipView").GetComponent<ShipView>();
+		gameView = GameObject.Find(typeof(GameView).Name).GetComponent<GameView>();		
+		gameView.ThrowIfNull();
+
+		for(int i = 1; i <= 3; i++)
+		{
+			SpriteRenderer sr = transform.GetChild("skill" + i).GetComponent<SpriteRenderer>();
+			sr.ThrowIfNull();
+			skills.Add(sr);
+		}
 	}
 
 	public void setSkill(int pos, SkillEnum skill)
 	{
-		Sprite spr = shipView.getSpriteForSkill(skill);
+		Sprite spr = gameView.getSpriteForSkill(skill);
 		skills[pos].sprite = spr;
-	}
-	
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }

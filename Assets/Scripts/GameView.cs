@@ -3,39 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spewnity;
 
-public class ShipView : MonoBehaviour 
+public class GameView : MonoBehaviour 
 {
 	[HideInInspector]
-	public List<PirateView> pirates;
-	public Skill[] skills;
+	public SkillView[] skills;
 	
-	void Awake() 
+	void Start() 
 	{
 		foreach(PirateView pv in transform.GetComponentsInChildren<PirateView>())
 		{
-			pirates.Add(pv);
 			pv.setSkill(0, (SkillEnum) Random.Range(1,6));
 			pv.setSkill(1, (SkillEnum) Random.Range(1,6));
 			pv.setSkill(2, (SkillEnum) Random.Range(1,6));
 		}
+
+		foreach(TaskView tv in transform.GetComponentsInChildren<TaskView>())
+		{
+			tv.setCoin(4);
+			tv.setCrew(2);
+			tv.setSkill(0, (SkillEnum) Random.Range(1,6));
+			tv.setSkill(1, (SkillEnum) Random.Range(1,6));
+			tv.setSkill(2, (SkillEnum) Random.Range(0,6));
+		}
 	}
 	
-	void Update () 
-	{
-		
-	}
 	public Sprite getSpriteForSkill(SkillEnum skillEnum)
 	{
-		foreach(Skill skill in skills)
+		foreach(SkillView skill in skills)
 			if(skill.type == skillEnum)
 				return skill.sprite;
+		Debug.Log("Skill not found:" + skillEnum);
 		return null;
 	}
 }
 
 
 [System.Serializable]
-public struct Skill
+public struct SkillView
 {
 	public SkillEnum type;
 	public Sprite sprite;
