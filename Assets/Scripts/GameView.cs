@@ -5,33 +5,65 @@ using Spewnity;
 
 public class GameView : MonoBehaviour 
 {
-	[HideInInspector]
 	public SkillView[] skills;
+	public GameObject piratePrefab;
+	public GameObject taskPrefab;
+	private MutinyModel model;
+	private Transform stage;
+	private int numPirates;
+	private int numTasks;
+
+	void Awake()
+	{
+		model = GameObject.Find(typeof(MutinyModel).Name).GetComponent<MutinyModel>();		
+		model.ThrowIfNull();
+
+		stage = transform.Find("Stage");
+		stage.ThrowIfNull();
+	}
 	
 	void Start() 
 	{
-		foreach(PirateView pv in transform.GetComponentsInChildren<PirateView>())
-		{
-			pv.setSkill(0, (SkillEnum) Random.Range(1,6));
-			pv.setSkill(1, (SkillEnum) Random.Range(1,6));
-			pv.setSkill(2, (SkillEnum) Random.Range(1,6));
-		}
-
-		foreach(TaskView tv in transform.GetComponentsInChildren<TaskView>())
-		{
-			tv.setCoin(4);
-			tv.setCrew(2);
-			tv.setSkill(0, (SkillEnum) Random.Range(1,6));
-			tv.setSkill(1, (SkillEnum) Random.Range(1,6));
-			tv.setSkill(2, (SkillEnum) Random.Range(0,6));
-		}
+		model.reset();
 	}
-	
+
+	public void onReset()
+	{
+		numTasks = numPirates = 0;		
+	}
+
+	public void onPirateCreated(Pirate pirate)
+	{
+		GameObject go = Instantiate(piratePrefab);
+		go.name = "pirate" + numPirates;
+		go.transform.parent = stage;
+		go.transform.localPosition = new Vector3(-3.5f + 0.85f * numPirates, 1.5f, 0);
+		PirateView view = go.GetComponent<PirateView>();
+		view.setPirate(pirate);
+		numPirates++;
+	}
+	public void onTaskCreated(Task task)
+	{
+		GameObject go = Instantiate(taskPrefab);
+		go.name = "task" + numTasks;
+		go.transform.parent = stage;
+		go.transform.localPosition = new Vector3(-3.5f + 1.2f * numTasks, -1.5f, 0);
+		TaskView view = go.GetComponent<TaskView>();
+		view.setTask(task);
+		numTasks++;
+	}
+	public void onStartMission()
+	{
+		
+	}
+
 	public Sprite getSpriteForSkill(SkillEnum skillEnum)
 	{
 		foreach(SkillView skill in skills)
+		{
 			if(skill.type == skillEnum)
 				return skill.sprite;
+		}
 		Debug.Log("Skill not found:" + skillEnum);
 		return null;
 	}

@@ -43,6 +43,14 @@ public class TaskView : MonoBehaviour
 			coins.Add(transform.GetChild("coin" + i).GetComponent<SpriteRenderer>());
 	}
 
+	public void setTask(Task task)
+	{
+		for(int i = 0; i < task.skills.Count; i++)
+			setSkill(i, task.skills[i]);
+		setCrew(task.crew);
+		setGold(task.gold);
+	}
+
 	public void setSkill(int pos, SkillEnum skill)
 	{
 		Sprite spr = gameView.getSpriteForSkill(skill);
@@ -56,7 +64,7 @@ public class TaskView : MonoBehaviour
 			crew[i].enabled = countToCrew[count, i];
 	}
 
-	public void setCoin(int count)
+	public void setGold(int count)
 	{
 		Debug.Assert(count >= 0 && count <= 5);
 		for(int i = 0; i < 5; i++)

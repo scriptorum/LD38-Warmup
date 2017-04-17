@@ -20,9 +20,24 @@ public class PirateView : MonoBehaviour
 		}
 	}
 
+	public void setPirate(Pirate pirate)
+	{
+		for(int i = 0; i < 3; i++)
+			if(i < pirate.skills.Count)
+				setSkill(i, pirate.skills[i]);
+			else setSkill(i, SkillEnum.None);
+	}
+
 	public void setSkill(int pos, SkillEnum skill)
 	{
-		Sprite spr = gameView.getSpriteForSkill(skill);
-		skills[pos].sprite = spr;
+
+		if(skill == SkillEnum.None)
+			skills[pos].enabled = false;
+		else
+		{
+			skills[pos].enabled = true;
+			Sprite spr = gameView.getSpriteForSkill(skill);
+			skills[pos].sprite = spr;
+		}
 	}
 }
