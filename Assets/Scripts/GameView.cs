@@ -37,7 +37,7 @@ public class GameView : MonoBehaviour
 		GameObject go = Instantiate(piratePrefab);
 		go.name = "pirate" + numPirates;
 		go.transform.parent = stage;
-		go.transform.localPosition = new Vector3(-3.5f + 0.85f * numPirates, 1.5f, 0);
+		go.transform.localPosition = new Vector3(-3.4f + 0.85f * numPirates, 2.15f, 0);
 		PirateView view = go.GetComponent<PirateView>();
 		view.setPirate(pirate);
 		numPirates++;
@@ -47,14 +47,14 @@ public class GameView : MonoBehaviour
 		GameObject go = Instantiate(taskPrefab);
 		go.name = "task" + numTasks;
 		go.transform.parent = stage;
-		go.transform.localPosition = new Vector3(-3.5f + 1.2f * numTasks, -1.5f, 0);
+		go.transform.localPosition = new Vector3(-2.7f, .6f - 1.35f * numTasks, 0);
 		TaskView view = go.GetComponent<TaskView>();
 		view.setTask(task);
 		numTasks++;
 	}
 	public void onStartMission()
 	{
-		
+		Debug.Log("Start of mission #" + model.mission);
 	}
 
 	public Sprite getSpriteForSkill(SkillEnum skillEnum)
